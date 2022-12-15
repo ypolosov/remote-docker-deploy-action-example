@@ -9,3 +9,4 @@ COPY ./package-lock.json .
 RUN npm i
 
 CMD [ "npm", "run", "start" ]
+
