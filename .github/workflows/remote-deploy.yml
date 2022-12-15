@@ -11,9 +11,10 @@ jobs:
         run: npm i
       - name: Import environment variables from a file
         run: |
-          echo "SSH_AUTH_SOCK=/tmp/ssh_agent.sock" >> $GITHUB_ENV
-          echo "SSH_USER=${{ secrets.SSH_USER }}" >> $GITHUB_ENV
-          echo "SSH_PORT=${{ secrets.SSH_PORT }}" >> $GITHUB_ENV
+          # echo "SSH_AUTH_SOCK=/tmp/ssh_agent.sock" >> $GITHUB_ENV
+          # echo "SSH_USER=${{ secrets.SSH_USER }}" >> $GITHUB_ENV
+          # echo "SSH_PORT=${{ secrets.SSH_PORT }}" >> $GITHUB_ENV
+          cat ./.env >> $GITHUB_ENV
       - name: configure ssh connection
         # env:
           # SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -22,9 +23,8 @@ jobs:
           # SSH_PORT: ${{ secrets.SSH_PORT }}
           # DOCKER_HOST: ssh://${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_PORT }}
         run: |
-          export SSH_HOST=${{ secrets.SSH_HOST }}
           mkdir -p ~/.ssh
-          ssh-keyscan -p ${{ secrets.SSH_PORT }} -t rsa ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -p $SSH_PORT -t rsa $SSH_HOST >> ~/.ssh/known_hosts
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-add - <<< "${{ secrets.SSH_KEY }}"
           # npm run deploy:xxx
