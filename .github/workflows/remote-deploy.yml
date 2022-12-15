@@ -22,6 +22,6 @@ jobs:
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-add - <<< "${{ secrets.SSH_KEY }}"
           # npm run deploy:xxx
-          ./deploy.sh
+          bash ./deploy.sh
 
 
