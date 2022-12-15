@@ -12,6 +12,9 @@ jobs:
       - name: configure ssh connection
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
           # DOCKER_HOST: ssh://${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_PORT }}
         run: |
           mkdir -p ~/.ssh
@@ -19,6 +22,6 @@ jobs:
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-add - <<< "${{ secrets.SSH_KEY }}"
           # npm run deploy
-          docker -H "ssh://${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_PORT }}" run --rm -d --net host -e "APP_PORT=3000" -e "APP_NAME=app-1" "${{ secrets.SSH_USER }}/app-1"
+          docker -H "ssh://$SSH_USER@$SSH_HOST:$SSH_PORT" run --rm -d --net host -e "APP_PORT=3000" -e "APP_NAME=app-1" "$SSH_USER/app-1"
 
 
