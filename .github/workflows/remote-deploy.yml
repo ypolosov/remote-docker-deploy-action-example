@@ -9,12 +9,17 @@ jobs:
       - uses: actions/checkout@v2
       - name: Npm Install
         run: npm i
+      - name: Import environment variables from a file
+        run: |
+          echo "SSH_AUTH_SOCK=/tmp/ssh_agent.sock" >> $GITHUB_ENV
+          echo "SSH_USER=${{ secrets.SSH_USER }}" >> $GITHUB_ENV
+          echo "SSH_PORT=${{ secrets.SSH_PORT }}" >> $GITHUB_ENV
       - name: configure ssh connection
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-          SSH_USER: ${{ secrets.SSH_USER }}
+        # env:
+          # SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+          # SSH_USER: ${{ secrets.SSH_USER }}
           # SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_PORT: ${{ secrets.SSH_PORT }}
+          # SSH_PORT: ${{ secrets.SSH_PORT }}
           # DOCKER_HOST: ssh://${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_PORT }}
         run: |
           export SSH_HOST=${{ secrets.SSH_HOST }}
